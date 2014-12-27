@@ -38,6 +38,10 @@
       .scale {
         width: 350px;
       }
+
+      .scale-lg {
+        width: 450px;
+      }
     }
 
     @media (min-width: 250px) {
@@ -100,20 +104,73 @@
       </section>
     </div>
 
-    <div class="content row" id="smile">
-      <section class="geninfo col col-lg-4">
-        <img src="./img/finaliteration.jpg" class="scale" width="100%">
-        <p><b>Figure 1</b></p>
+    <div class="row" id="smile">
+      <section class="col col-lg-12">
+      <h2>Smile Detector</h2>
       </section>
-      <section class="geninfo col col-lg-8">
-        <h3>Final Iteration</h3>
-        <p>In this iteration, the MDF platforms supporting the servos are now round instead of square, and have holes cut through them to allow the servo cables to pass through to the arduino, which will be at ground-level. The Heave motion is supported with three aluminum rods that pass through nylon spacers in the upper platform, creating fewer moving parts and fewer failure points. Additionally, the tubes are attached to the bottom plate in a way that does not interfere with the support plate. They run through additional nylon spacers to ensure the tubes are square with the platform and each other, and are kept from moving up and down by music wire inserted through a hole below the platform and another above the spacer.</p>
+    </div>
 
-        <p>Next, the scotch yoke assembly is made out of laser-cut delrin, reducing the friction between the faces as the servo turns the wheel.</p>
+    <div class="content row">
+      <section class="geninfo col col-lg-3">
+        <p><b>Face and smile detection</b></p>
+        <p>OpenCV has a library dedicated to identifying different regions of human faces and smiles. We incorporated these libraries (haar_cascade files) to create a face and mouth detector on a computer, using Python. Essentially the program takes the video feed from a webcam, runs the detector on the images, draws a square around the face and mouth regions, and shows the results in a live window. To increase the efficiency and accuracy of the mouth detector, we limited it to only analyze the images within the detected face regions.</p>
+      </section>
+      <section class="col col-lg-5">
+        <img src="./img/mouthdetection.png" width="100%" class="scale-lg">
+      </section>
+      <section class="col col-lg-4">
+        <p>This beginning iteration worked very well for our purposes and consistently delivered working results. Occasionally the program would identify faces in the background that were not there and the face detector would only detect them if the person's face was angled directly toward the camera with some flexibility for faces that were turned slightly away from the camera, but it was working fairly consistently. Using this as a starting block, we attempted to incorporate the OpenCV smile detector. However, no matter how much testing or strategies we tried to use, we could not get it to produce any working results. For example, one of our strategies was to limit the smile detector to the area within the detected face and later to only within the mouth region, but it continued to fail. We then decided to construct our own smile detector.</p>
+      </section>
+    </div>
 
-        <p>The upper servo is mounted in an MDF support, and the lower platform is supported by an MDF sheet. This allows the bottom servo to only exert a torsional force, and not compensate for cross forces.</p>
+    <div class="row">
+      <section class="col col-lg-4">
+        <p><b>Smile detector trained</b></p>
+        <p>We created a new smile classifier by using machine learning to train our computer to identify smiles. We obtained a database of 20,000 labeled smiles from Olin Professor Paul Ruvolo and used a Python library called scikit-learn to generate a smile detection model using an algorithm called Logistic Regression. Essentially, it calculated the probability that the read image contained a smile and returned a generalized image of a smile. When the program runs, the classifier compares the detected faces to the generalized image and calculates a log probability to determine how similar detected faces are to it. It then returns the value which we set a threshold on for either smiling or not. With this classifier, we were able to detect smiles reliably and produce working results.</p>
+      </section>
+      <section class="col col-lg-4">
+        <img src="./img/generalizedsmile.png" width="100%" class="scale-sm">
+        <p><b>The generalized image of a smile that the smile detector uses to compare detected faces to in order to determine if the person is smiling. This image was created from training 20,000 labeled images.</b></p>
+      </section>
+      <section class="col col-lg-4">
+        <img src="./img/JulianSmileDetector2.png" width="100%" class="scale">
+        <p><b>Figure 3a: An image from the video feed of the smile detector when a person is not smiling</b></p>
+      </section>
+    </div>
 
-        <p>The mechanism that causes the penguin's wings to flap is seen in Figure 1. A micro-servo drives an ornithopter linkage that causes the wings to flap. After iteration 2, we felt that we had adequate time and resources to compensate for the dropped degree of freedom by adding a flapping motion. This motion will give the robot a higher degree of character and interactivity, as well as more variety in its motions.</p>
+    <div class="row">
+      <section class="col col-lg-4">
+        <img src="./img/SmileDetectorConsole2.jpg" width="100%" class="scale">
+        <p><b>The output of running the program when neither a face nor a smile is detected, when a face is detected but no smile, and when both a face and a smile are detected. The above screenshot of Figure 3a was taken at the bottom line of this printout where a face is detected, but no smiles are detected.</b></p>
+      </section>
+      <section class="col col-lg-4">
+        <img src="./img/JulianSmileDetector.jpg" width="100%" class="scale">
+        <p><b>Figure 3c: An image from the video feed of the smile detector when a person is smiling. Note how the smile probability is above 1.0.</b></p>
+      </section>
+      <section class="col col-lg-4">
+        <img src="./img/SmileDetectorConsole.jpg" width="100%" class="scale">
+        <p><b>The console printout for figure 3c, when a person is smiling.</b></p>
+      </section>
+    </div>
+
+    <div class="row">
+      <section class="col col-lg-12">
+        <h3>Potential Smile Detection Problems</h3>
+      </section>
+    </div>
+
+    <div class="row">
+      <section class="col col-lg-4">
+        <p>There is some variability in the returned values. For example, although the program correctly identified when Julian and Michelle were smiling, the returned values for Michelle were consistently lower than Julian’s. Because of that, the smile detection sometimes detected smiles on Julian when Julian wasn’t smiling, and sometimes failed to detect smiles on Michelle when Michelle was smiling. This problem could be solved by adjusting the smile probability threshold for each individual, but is not a practical solution if this robot is to be used by many people. Instead we set the threshold at a value that on average detects smiles for the majority of the people. We determined this number by the 20,000 smiling data we trained the model off of.</p>
+        <p>We also found that the background and factors such as lighting affect the smile detection as well. Because of this, we decided to keep these factors constant by always using it in the same place, under the same background and lighting.</p>
+      </section>
+      <section class="col col-lg-4">
+        <img src="./img/MichelleSmileDetector.png" width="100%" class="scale">
+        <p><b>Figure 4a: Picture of Michelle smiling, but a smile is not detected.</b></p>
+      </section>
+      <section class="col col-lg-4">
+        <img src="./img/SmileDetectorConsole.jpg" width="100%" class="scale">
+        <p><b>Figure 4b. An image from the video feed of the smile detector. Note how the percentages are different from figure 3b.</b></p>
       </section>
     </div>
 
@@ -134,14 +191,6 @@
 
           <p>We chose to use the webcam camera instead of a detached camera because we have found that the arduino does not have enough capacity to process everything quickly enough for the smile detection to be useful.</p>
       </section>
-    </div>
-
-    <div style="padding-top: 15px" class="text-center">
-      <ol class="breadcrumb">
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="./mechanical.html">Mechanical</a></li>
-        <li class="active">Software</li>
-      </ol>
     </div>
 
   </section><!-- container -->
