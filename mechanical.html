@@ -14,17 +14,19 @@
       opacity: 1;
     }
 
-    body {
-      padding-top: 100px;
-    }
-
     #final, #iteration2, #iteration1, #model, #sketches {
       padding-top: 60px;
     }
 
-    @media (min-width: 768px) and (max-width: 1200px) {
-      .video {
-        width: 560px;
+    @media (min-width: 768px) {
+      body {
+        padding-top: 100px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding-top: 50px;
       }
     }
 
@@ -63,7 +65,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="#final" class="page-scroll">Final Iteration</a></li>
+          <li><a href="#final" class="page-scroll">Final</a></li>
           <li><a href="#iteration2" class="page-scroll">Iteration 2</a></li>
           <li><a href="#model" class="page-scroll">Model</a></li>
           <li><a href="#iteration1" class="page-scroll">Iteration 1</a></li>
@@ -179,6 +181,14 @@
         <img src="./img/sketches7.jpg" class="sketches img-rounded" width="24%">
         <img src="./img/sketches8.jpg" class="sketches img-rounded" width="24%">
       </section>
+    </div>
+
+    <div style="padding-top: 15px" class="text-center">
+      <ol class="breadcrumb">
+        <li><a href="./index.html">Home</a></li>
+        <li class="active">Mechanical</li>
+        <li><a href="./software.html">Software</a></li>
+      </ol>
     </div>
 
   </section><!-- container -->
